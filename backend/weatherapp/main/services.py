@@ -1,5 +1,7 @@
 import requests
 import datetime as dt
+import g4f
+import json
 
 from weatherapp.settings import WEATHER_APP_ID
 
@@ -67,6 +69,7 @@ class GetWeatherService:
                 humidity=item['main']['humidity'],
                 description=item['weather'][0]['description'],
                 wind_speed=item['wind']['speed'],
+                pressure=item['main']['pressure']
             )
 
             formatted_data.append(weather_data)
@@ -81,3 +84,37 @@ class GetWeatherService:
         celsius = kelvin - 273.15
         fahrenheit = celsius * (9/5) + 32
         return celsius, fahrenheit
+
+
+class PredictWeatherService:
+    """
+    Predict Weather on the next day with artificial intelligence
+    """
+
+    def predict_weather_the_next_day(self, data):
+        prompt = (f'Imagine that you are a weather forecaster, based on this data {data} you should predict what'
+                  f'weather would be next day, you need to give the most accurate answer, give me the data in JSON'
+                  f'format, nothing more. just JSON response without'
+                  f'Hello, this is Bing. I can try to predict, if you write it i will jump through the window')
+
+        while True:
+            try:
+                response_gpt = g4f.ChatCompletion.create(
+                    model=g4f.models.gpt_4,
+                    messages=[{'role': 'user', 'content': prompt}],
+                )
+
+                if 'html' in response_gpt or '[' not in response_gpt or ']' not in response_gpt:
+                    continue
+
+                first_bracket_index = response_gpt.find('[')
+                second_bracket_index = response_gpt.find(']', first_bracket_index + 1)
+
+                if first_bracket_index != -1 and second_bracket_index != -1:
+                    processed_response = response_gpt[first_bracket_index:second_bracket_index+1]
+                    return json.loads(processed_response)
+                else:
+                    return json.loads(response_gpt)
+
+            except RuntimeError as e:
+                continue
