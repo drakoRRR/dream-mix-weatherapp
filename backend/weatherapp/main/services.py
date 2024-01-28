@@ -112,7 +112,10 @@ class PredictWeatherService:
 
                 if first_bracket_index != -1 and second_bracket_index != -1:
                     processed_response = response_gpt[first_bracket_index:second_bracket_index+1]
-                    return json.loads(processed_response)
+                    try:
+                        return json.loads(processed_response)
+                    except Exception as e:
+                        continue
                 else:
                     return json.loads(response_gpt)
 
