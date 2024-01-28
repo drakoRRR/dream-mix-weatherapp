@@ -62,10 +62,10 @@ class GetWeatherService:
 
             weather_data = dict(
                 date=item['dt_txt'],
-                temp_celsius=temp_celsius,
-                temp_fahrenheit=temp_fahrenheit,
-                feels_like_celsius=feels_like_celsius,
-                feels_like_fahrenheit=feels_like_fahrenheit,
+                temp_celsius=round(temp_celsius, 2),
+                temp_fahrenheit=round(temp_fahrenheit, 2),
+                feels_like_celsius=round(feels_like_celsius, 2),
+                feels_like_fahrenheit=round(feels_like_fahrenheit, 2),
                 humidity=item['main']['humidity'],
                 description=item['weather'][0]['description'],
                 wind_speed=item['wind']['speed'],
