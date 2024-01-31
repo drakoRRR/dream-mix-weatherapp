@@ -16,12 +16,12 @@ docker-compose up -d --build
 
 # Аналіз прогнозу
 
-![analyze](\media_readme\vs.jpg)
+![analyze](media_readme\vs.jpg)
 
 Для оцінки точності прогнозу метеорологічних даних обчислимо абсолютну помилку (Mean Absolute Error, MAE) 
 між фактичними та прогнозованими значеннями температури. Формула MAE виглядає наступним чином:
 
-![analyze](\media_readme\formula1.png)
+![analyze](media_readme\formula1.png)
 
 де:
 
@@ -53,7 +53,7 @@ docker-compose up -d --build
 
 Тепер обчислимо середню абсолютну помилку (MAE):
 
-![analyze](\media_readme\formula2.png)
+![analyze](media_readme\formula2.png)
 
 Середня абсолютна помилка становить приблизно 1.12 градуса Цельсія. Це значення вказує на те, наскільки у 
 середньому прогнозовані температури відрізняються від фактичних. Прогноз можна оцінити досить точним
