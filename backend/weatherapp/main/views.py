@@ -1,3 +1,4 @@
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
 from main.serializers import GetWeatherByCityDateSerializer, GetWeatherByCityTodaySerializer
@@ -47,3 +48,16 @@ class GetPredictWeatherByCityDate(views.APIView):
         res = PredictWeatherService().predict_weather_the_next_day(data_for_predict)
 
         return Response(data=res, status=status.HTTP_200_OK)
+
+
+class GetCitiesForPredict(views.APIView):
+    """
+    Get cities for predict
+    """
+
+    def get(self, request):
+
+        popular_cities = ["New York", "Tokyo", "London", "Paris", "Los Angeles", "Beijing", "Dubai",
+                          "Mumbai", "Sydney", "Rio de Janeiro"]
+
+        return Response(data=popular_cities, status=status.HTTP_200_OK)

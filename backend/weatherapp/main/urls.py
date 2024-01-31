@@ -11,4 +11,5 @@ urlpatterns = [
          name='get-predict-weather-by-city-date'),
 
     path('get-weather-by-city-today/', main.views.GetWeatherByCityToday.as_view(), name='get-weather-by-city-today'),
+    path('get-cities/', main.views.GetCitiesForPredict.as_view(), name='get-cities'),
 ]

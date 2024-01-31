@@ -69,7 +69,8 @@ class GetWeatherService:
                 humidity=item['main']['humidity'],
                 description=item['weather'][0]['description'],
                 wind_speed=item['wind']['speed'],
-                pressure=item['main']['pressure']
+                pressure=item['main']['pressure'],
+                city=data['city']['name']
             )
 
             formatted_data.append(weather_data)
