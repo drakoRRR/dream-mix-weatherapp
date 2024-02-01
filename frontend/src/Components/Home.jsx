@@ -19,7 +19,7 @@ const Home = () => {
     const [chartData, setChartData] = useState([]);
     const [allCities, setAllCities] = useState([]);
     const [confirmationDate, setConfirmationDate] = useState(null);
-    const [forecastDays, setForecastDays] = useState(1); 
+    const [forecastDays, setForecastDays] = useState(1);
     const [dateRange, setDateRange] = useState([selectedDate, selectedDate]);
 
 
@@ -30,7 +30,7 @@ const Home = () => {
 
     const handleActualForecast = () => {
         let start_date, end_date;
-    
+
         if (forecastDays === 1) {
             start_date = currentDate.format('YYYY-MM-DD');
             end_date = currentDate.format('YYYY-MM-DD');
@@ -38,16 +38,15 @@ const Home = () => {
             start_date = currentDate.format('YYYY-MM-DD');
             end_date = currentDate.add(4, 'days').format('YYYY-MM-DD');
         }
-    
+
         fetchData(selectedDropdownCity, confirmationDate || selectedDate, start_date, end_date);
     };
-    
+
 
     const handleModelForecast = async () => {
         try {
-<<<<<<< HEAD
             let start_date, end_date;
-    
+
             if (forecastDays === 1) {
                 start_date = currentDate.format('YYYY-MM-DD');
                 end_date = currentDate.format('YYYY-MM-DD');
@@ -55,47 +54,30 @@ const Home = () => {
                 start_date = currentDate.format('YYYY-MM-DD');
                 end_date = currentDate.add(4, 'days').format('YYYY-MM-DD');
             }
-    
+
             console.log('Selected Date Range:', start_date, end_date);
-    
+
             const res = await axios.post('http://127.0.0.1:8000/api/get-predict-weather-by-city-date/', {
                 start_date: start_date,
                 end_date: end_date,
                 city: selectedDropdownCity,
             });
-    
-=======
-            const res = await axios.post('http://127.0.0.1:8000/api/get-predict-weather-by-city-date/',
-                {
-                    start_date: selectedDate.format('YYYY-MM-DD'),
-                    end_date: selectedDate.format('YYYY-MM-DD'),
-                    city: selectedDropdownCity,
-                },
-            );
 
->>>>>>> 68c5a87682d944986a60e986d8fb50ac8a860de2
             if (res.status !== 200) {
                 throw new Error(`HTTP error! Status: ${res.status}`);
             }
-    
+
             const predictWeather = res.data;
             console.log('Predicted Weather:', predictWeather);
         } catch (error) {
             console.error('Error fetching predicted weather data:', error);
         }
     };
-    
+
 
 
     const fetchData = async (city, date) => {
         try {
-<<<<<<< HEAD
-            const res = await axios.post('http://127.0.0.1:8000/api/get-weather-by-city-date/', {
-                start_date: date.format('YYYY-MM-DD'),
-                end_date: date.format('YYYY-MM-DD'),
-                city: city,
-            });
-=======
             const res = await axios.post('http://127.0.0.1:8000/api/get-weather-by-city-date/',
                 {
                     start_date: date.format('YYYY-MM-DD'),
@@ -103,7 +85,6 @@ const Home = () => {
                     city: city,
                 },
             );
->>>>>>> 68c5a87682d944986a60e986d8fb50ac8a860de2
 
             if (res.status !== 200) {
                 throw new Error(`HTTP error! Status: ${res.status}`);
