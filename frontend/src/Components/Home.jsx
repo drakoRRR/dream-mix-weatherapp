@@ -45,6 +45,7 @@ const Home = () => {
 
     const handleModelForecast = async () => {
         try {
+<<<<<<< HEAD
             let start_date, end_date;
     
             if (forecastDays === 1) {
@@ -63,6 +64,16 @@ const Home = () => {
                 city: selectedDropdownCity,
             });
     
+=======
+            const res = await axios.post('http://127.0.0.1:8000/api/get-predict-weather-by-city-date/',
+                {
+                    start_date: selectedDate.format('YYYY-MM-DD'),
+                    end_date: selectedDate.format('YYYY-MM-DD'),
+                    city: selectedDropdownCity,
+                },
+            );
+
+>>>>>>> 68c5a87682d944986a60e986d8fb50ac8a860de2
             if (res.status !== 200) {
                 throw new Error(`HTTP error! Status: ${res.status}`);
             }
@@ -78,11 +89,21 @@ const Home = () => {
 
     const fetchData = async (city, date) => {
         try {
+<<<<<<< HEAD
             const res = await axios.post('http://127.0.0.1:8000/api/get-weather-by-city-date/', {
                 start_date: date.format('YYYY-MM-DD'),
                 end_date: date.format('YYYY-MM-DD'),
                 city: city,
             });
+=======
+            const res = await axios.post('http://127.0.0.1:8000/api/get-weather-by-city-date/',
+                {
+                    start_date: date.format('YYYY-MM-DD'),
+                    end_date: date.format('YYYY-MM-DD'),
+                    city: city,
+                },
+            );
+>>>>>>> 68c5a87682d944986a60e986d8fb50ac8a860de2
 
             if (res.status !== 200) {
                 throw new Error(`HTTP error! Status: ${res.status}`);
