@@ -32,13 +32,13 @@ const Home = () => {
 
     const handleModelForecast = async () => {
         try {
-            const res = await axios.get('http://localhost:8000/api/get-predict-weather-by-city-date/', {
-                params: {
+            const res = await axios.post('http://127.0.0.1:8000/api/get-predict-weather-by-city-date/',
+                {
                     start_date: selectedDate.format('YYYY-MM-DD'),
                     end_date: selectedDate.format('YYYY-MM-DD'),
                     city: selectedDropdownCity,
                 },
-            });
+            );
 
             if (res.status !== 200) {
                 throw new Error(`HTTP error! Status: ${res.status}`);
@@ -53,13 +53,13 @@ const Home = () => {
 
     const fetchData = async (city, date) => {
         try {
-            const res = await axios.get('http://localhost:8000/api/get-weather-by-city-date/', {
-                params: {
+            const res = await axios.post('http://127.0.0.1:8000/api/get-weather-by-city-date/',
+                {
                     start_date: date.format('YYYY-MM-DD'),
                     end_date: date.format('YYYY-MM-DD'),
                     city: city,
                 },
-            });
+            );
 
             if (res.status !== 200) {
                 throw new Error(`HTTP error! Status: ${res.status}`);
@@ -82,7 +82,7 @@ const Home = () => {
 
     const fetchAllCities = async () => {
         try {
-            const res = await axios.get('http://localhost:8000/api/get-cities');
+            const res = await axios.get('http://127.0.0.1:8000/api/get-cities/');
 
             if (res.status !== 200) {
                 throw new Error(`HTTP error! Status: ${res.status}`);
