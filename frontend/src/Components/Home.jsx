@@ -3,8 +3,11 @@ import dayjs from 'dayjs';
 import axios from 'axios';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { LineChart } from '@mui/x-charts/LineChart';
+import TextField from '@mui/material/TextField';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
+
 
 const Home = () => {
     const [loading, setLoading] = useState(true);
@@ -15,50 +18,70 @@ const Home = () => {
     const [uniqueHours, setUniqueHours] = useState([]);
     const [chartData, setChartData] = useState([]);
     const [allCities, setAllCities] = useState([]);
+    const [confirmationDate, setConfirmationDate] = useState(null);
+    const [forecastDays, setForecastDays] = useState(1); 
+    const [dateRange, setDateRange] = useState([selectedDate, selectedDate]);
 
-    const cities = ["New York", "Київ", "Харків", "Львів", "Одеса", "Дніпро", "Донецьк", "Запоріжжя", "Луганськ", "Івано-Франківськ", "Чернівці", "Житомир", "Вінниця"];
 
-    const handleDateChange = (date) => {
-        setSelectedDate(date);
-    };
 
     const handleCityFilterButtonClick = (selectedCity) => {
         setSelectedDropdownCity(selectedCity);
     };
 
     const handleActualForecast = () => {
-        fetchData(selectedDropdownCity, selectedDate);
+        let start_date, end_date;
+    
+        if (forecastDays === 1) {
+            start_date = currentDate.format('YYYY-MM-DD');
+            end_date = currentDate.format('YYYY-MM-DD');
+        } else {
+            start_date = currentDate.format('YYYY-MM-DD');
+            end_date = currentDate.add(4, 'days').format('YYYY-MM-DD');
+        }
+    
+        fetchData(selectedDropdownCity, confirmationDate || selectedDate, start_date, end_date);
     };
+    
 
     const handleModelForecast = async () => {
         try {
-            const res = await axios.get('http://localhost:8000/api/get-predict-weather-by-city-date/', {
-                params: {
-                    start_date: selectedDate.format('YYYY-MM-DD'),
-                    end_date: selectedDate.format('YYYY-MM-DD'),
-                    city: selectedDropdownCity,
-                },
+            let start_date, end_date;
+    
+            if (forecastDays === 1) {
+                start_date = currentDate.format('YYYY-MM-DD');
+                end_date = currentDate.format('YYYY-MM-DD');
+            } else {
+                start_date = currentDate.format('YYYY-MM-DD');
+                end_date = currentDate.add(4, 'days').format('YYYY-MM-DD');
+            }
+    
+            console.log('Selected Date Range:', start_date, end_date);
+    
+            const res = await axios.post('http://127.0.0.1:8000/api/get-predict-weather-by-city-date/', {
+                start_date: start_date,
+                end_date: end_date,
+                city: selectedDropdownCity,
             });
-
+    
             if (res.status !== 200) {
                 throw new Error(`HTTP error! Status: ${res.status}`);
             }
-
+    
             const predictWeather = res.data;
             console.log('Predicted Weather:', predictWeather);
         } catch (error) {
             console.error('Error fetching predicted weather data:', error);
         }
     };
+    
+
 
     const fetchData = async (city, date) => {
         try {
-            const res = await axios.get('http://localhost:8000/api/get-weather-by-city-date/', {
-                params: {
-                    start_date: date.format('YYYY-MM-DD'),
-                    end_date: date.format('YYYY-MM-DD'),
-                    city: city,
-                },
+            const res = await axios.post('http://127.0.0.1:8000/api/get-weather-by-city-date/', {
+                start_date: date.format('YYYY-MM-DD'),
+                end_date: date.format('YYYY-MM-DD'),
+                city: city,
             });
 
             if (res.status !== 200) {
@@ -82,7 +105,7 @@ const Home = () => {
 
     const fetchAllCities = async () => {
         try {
-            const res = await axios.get('http://localhost:8000/api/get-cities');
+            const res = await axios.get('http://127.0.0.1:8000/api/get-cities/');
 
             if (res.status !== 200) {
                 throw new Error(`HTTP error! Status: ${res.status}`);
@@ -128,18 +151,15 @@ const Home = () => {
         fetchData(selectedDropdownCity, selectedDate);
     }, [selectedDropdownCity, selectedDate]);
 
+
+
+    const handleForecastDaysChange = (days) => {
+        setForecastDays(days);
+    };
+
+
     return (
         <div>
-            <div style={{ position: 'absolute', top: 10, right: 20 }}>
-                <LocalizationProvider dateAdapter={AdapterDayjs} className="calendar">
-                    <DateCalendar
-                        defaultValue={currentDate}
-                        views={['year', 'month', 'day']}
-                        disablePast={true}
-                        onChange={(newDate) => handleDateChange(newDate)}
-                    />
-                </LocalizationProvider>
-            </div>
             <div className="dropdown">
                 <select
                     value={selectedDropdownCity}
@@ -169,6 +189,37 @@ const Home = () => {
                 </button>
             </div>
 
+            <div>
+                {dateRange[0].isValid() && dateRange[1].isValid() && (
+                    <p>
+                        Selected Date Range: {dateRange[0].format("YYYY-MM-DD")} to {dateRange[1].format("YYYY-MM-DD")}
+                    </p>
+                )}
+            </div>
+
+            <div className="forecast-options">
+                <label>
+                    <input
+                        type="radio"
+                        name="forecastDays"
+                        value={1}
+                        checked={forecastDays === 1}
+                        onChange={() => handleForecastDaysChange(1)}
+                    />
+                    1 Day
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="forecastDays"
+                        value={5}
+                        checked={forecastDays === 5}
+                        onChange={() => handleForecastDaysChange(5)}
+                    />
+                    5 Days
+                </label>
+            </div>
             <div style={{ position: 'relative', width: '500px', height: '300px', marginLeft: '50px' }}>
                 <LineChart
                     xAxis={[{ data: uniqueHours }]}
@@ -207,6 +258,6 @@ const Home = () => {
             </div>
         </div>
     );
-}
+};
 
 export default Home;
