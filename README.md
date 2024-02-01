@@ -14,6 +14,8 @@ For a quick start, use:
 docker-compose up -d --build
 ```
 
+By this url you can achive the site http://127.0.0.1:3000/
+
 # Аналіз прогнозу
 
 ![analyze](media_readme/vs.jpg)
