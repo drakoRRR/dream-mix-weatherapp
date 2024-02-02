@@ -39,7 +39,7 @@ const Home = () => {
     
             if (forecastDays === 1) {
                 start_date = currentDate.format('YYYY-MM-DD');
-                end_date = currentDate.format('YYYY-MM-DD');
+                end_date = currentDate.add(1, 'days').format('YYYY-MM-DD');
             } else {
                 start_date = currentDate.format('YYYY-MM-DD');
                 end_date = currentDate.add(4, 'days').format('YYYY-MM-DD');
@@ -58,15 +58,14 @@ const Home = () => {
             }
     
             const predictWeather = res.data;
-            console.log('Predicted Weather:', predictWeather); // Log the predicted weather data
+            console.log('Predicted Weather:', predictWeather); 
             setWeatherData(predictWeather);
         } catch (error) {
             console.error('Error fetching predicted weather data:', error);
         }finally {
-            setLoading(false); // Set loading to false after fetching, whether successful or not
+            setLoading(false); 
         }
     };
-    
     const handleModelForecast = async () => {
         try {
             setLoading(true);
@@ -74,10 +73,10 @@ const Home = () => {
     
             if (forecastDays === 1) {
                 start_date = currentDate.format('YYYY-MM-DD');
-                end_date = currentDate.format('YYYY-MM-DD');
+                end_date = currentDate.add(2, 'days').format('YYYY-MM-DD');
             } else {
                 start_date = currentDate.format('YYYY-MM-DD');
-                end_date = currentDate.add(4, 'days').format('YYYY-MM-DD');
+                end_date = currentDate.add(3, 'days').format('YYYY-MM-DD');
             }
     
             console.log('Selected Date Range:', start_date, end_date);
@@ -93,13 +92,13 @@ const Home = () => {
             }
     
             const predictWeather = res.data;
-            console.log('Predicted Weather:', predictWeather); // Log the predicted weather data
+            console.log('Predicted Weather:', predictWeather);
             setWeatherData(predictWeather);
 
         } catch (error) {
             console.error('Error fetching predicted weather data:', error);
         }finally {
-            setLoading(false); // Set loading to false after fetching, whether successful or not
+            setLoading(false); 
         }
     };
     
@@ -278,6 +277,5 @@ export default Home;
 
 
 
-//docker-compose logs               npm install react-spinners --save
-//docker-compose up -d --build    docker-compose up -d --build   node server.js   npm install
-
+//docker-compose logs              
+//docker-compose up -d --build    
