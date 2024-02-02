@@ -99,6 +99,10 @@ img {
 
 }
 
+.loading-container{
+  margin-left: 4000px;
+}
+
 .secondary-button-item_search {
   border-radius: 8px;
   margin-top: -70px;
